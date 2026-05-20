@@ -19,119 +19,102 @@ body{
   overflow:hidden;
 }
 
+/* GRID LINES BG */
 body::before{
   content:'';
   position:fixed;inset:0;
-  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
   background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 80%);
+  pointer-events:none;
 }
 
+/* CENTER */
 .wrap{
-  text-align:center;
-  z-index:1;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:0;position:relative;z-index:1;
+  padding:24px;
 }
 
+/* LOGO */
 .logo-wrap{
   position:relative;
-  width:130px; height:130px;
-  margin:0 auto 40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.logo-glow, .ring{
-  position:absolute;
-  inset:0;
-  border-radius:50%;
+  width:128px;height:128px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:44px;
 }
 
 .logo-glow{
-  background:radial-gradient(circle, rgba(0,255,150,0.2) 0%, transparent 70%);
-  animation:glowPulse 2s ease-in-out infinite;
+  position:absolute;inset:0;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 65%);
+  animation:glowPulse 2.2s ease-in-out infinite;
 }
 
-@keyframes glowPulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+@keyframes glowPulse{
+  0%,100%{transform:scale(1);opacity:.7}
+  50%{transform:scale(1.18);opacity:1}
+}
 
 .ring{
-  border:1px solid rgba(0,255,150,0.3);
-  animation:ringExpand 2.8s linear infinite;
+  position:absolute;inset:0;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.18);
+  animation:ringExpand 2.2s ease-out infinite;
 }
-.ring:nth-child(3){animation-delay:0.9s; opacity:0.6}
+.ring:nth-child(3){animation-delay:.9s;opacity:.5}
 
 @keyframes ringExpand{
-  from{transform:scale(0.6); opacity:1}
-  to{transform:scale(2); opacity:0}
+  0%{transform:scale(.7);opacity:.8}
+  100%{transform:scale(1.6);opacity:0}
 }
 
 .logo-img{
-  width:85px;
-  height:85px;
-  object-fit:contain;
-  z-index:2;
-  filter:drop-shadow(0 0 25px rgba(0,255,150,0.6));
+  width:80px;height:80px;object-fit:contain;
+  position:relative;z-index:2;
+  filter:drop-shadow(0 0 16px rgba(255,255,255,0.5)) drop-shadow(0 0 32px rgba(255,255,255,0.2));
+  animation:logoGlow 2.2s ease-in-out infinite;
 }
 
+@keyframes logoGlow{
+  0%,100%{filter:drop-shadow(0 0 16px rgba(255,255,255,0.5)) drop-shadow(0 0 32px rgba(255,255,255,0.2))}
+  50%{filter:drop-shadow(0 0 28px rgba(255,255,255,0.9)) drop-shadow(0 0 56px rgba(255,255,255,0.35))}
+}
+
+/* MESSAGE */
 .msg-area{
-  height:55px;
-  margin-bottom:30px;
-  position:relative;
+  height:44px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:28px;width:340px;max-width:88vw;overflow:hidden;position:relative;
 }
 
 .msg{
-  font-family:'Syne',sans-serif;
-  font-weight:800;
-  font-size:1.35rem;
-  letter-spacing:0.06em;
-  position:absolute;
-  width:100%;
-  opacity:0;
-  transition:all 0.45s ease;
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:clamp(1rem,4vw,1.2rem);
+  letter-spacing:0.04em;color:#fff;
+  position:absolute;opacity:0;transform:translateY(12px);
+  transition:opacity .4s ease,transform .4s ease;
+  white-space:nowrap;
 }
+.msg.show{opacity:1;transform:translateY(0)}
+.msg.hide{opacity:0;transform:translateY(-12px)}
 
-.msg.show{opacity:1;}
-
+/* PROGRESS */
 .progress-track{
-  width:320px;
-  height:4px;
-  background:rgba(255,255,255,0.08);
-  margin:0 auto 14px;
-  border-radius:2px;
-  overflow:hidden;
+  width:280px;max-width:80vw;height:2px;
+  background:rgba(255,255,255,0.08);border-radius:1px;
+  overflow:hidden;margin-bottom:12px;
 }
-
 .progress-fill{
-  height:100%;
-  background:linear-gradient(90deg, #00ff9d, #ffffff);
-  width:0%;
-  transition:width 0.85s ease;
+  height:100%;background:#fff;border-radius:1px;
+  width:0%;transition:width .7s cubic-bezier(.4,0,.2,1);
 }
 
 .pct{
-  font-family:'Syne',sans-serif;
-  font-size:0.78rem;
-  letter-spacing:0.2em;
-  color:#00ff9d;
-}
-
-/* URL Bar */
-.url-bar{
-  position:fixed;
-  bottom:35px;
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(10,10,10,0.85);
-  border:1px solid #00ff9d;
-  padding:9px 18px;
-  border-radius:50px;
-  font-family:monospace;
-  font-size:0.82rem;
-  color:#00ff9d;
-  white-space:nowrap;
-  min-width:300px;
-  text-align:center;
-  box-shadow:0 0 15px rgba(0,255,150,0.3);
+  font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:700;
+  letter-spacing:0.18em;color:rgba(255,255,255,0.35);
+  margin-bottom:0;
 }
 </style>
 </head>
@@ -142,15 +125,16 @@ body::before{
     <div class="logo-glow"></div>
     <div class="ring"></div>
     <div class="ring"></div>
-    <img class="logo-img" src="logo.png" alt="Astra"/>
+    <img class="logo-img" src="logo.png" alt="Astra"
+      onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><text y=%2260%22 font-size=%2256%22 fill=%22white%22 opacity=%220.8%22>✦</text></svg>'"/>
   </div>
 
   <div class="msg-area">
-    <div class="msg show" id="m0">Connecting to secure server...</div>
-    <div class="msg" id="m1">Bypassing verification...</div>
-    <div class="msg" id="m2">Downloading package...</div>
-    <div class="msg" id="m3">Almost there...</div>
-    <div class="msg" id="m4">Ready!</div>
+    <div class="msg show" id="m0">Getting ur download ready!</div>
+    <div class="msg" id="m1">Almost done</div>
+    <div class="msg" id="m2">Done!</div>
+    <div class="msg" id="m3">Downloading..</div>
+    <div class="msg" id="m4">Enjoy!</div>
   </div>
 
   <div class="progress-track">
@@ -159,58 +143,54 @@ body::before{
   <div class="pct" id="pct">0%</div>
 </div>
 
-<div class="url-bar" id="urlbar">https://download-tau-five.vercel.app/verify</div>
-
 <script>
+// CONFIG
 const FILE_NAME = "astra.zip";
 
-const urlList = [
-  "https://download-tau-five.vercel.app/verify?token=9377ee10",
-  "https://download-tau-five.vercel.app/session?id=ak392x",
-  "https://download-tau-five.vercel.app/dl?file=astra-v9377",
-  "https://download-tau-five.vercel.app/processing/node7842",
-  "https://download-tau-five.vercel.app/secure/download",
-  "https://download-tau-five.vercel.app/finalize?h=3928fK",
-  "https://download-tau-five.vercel.app/auth?ref=tau",
-  "https://download-tau-five.vercel.app/loading?progress=active"
+// Spam full URL like the example
+const base = "https://download-tau-five.vercel.app";
+const paths = ["/dl/", "/download/", "/get/", "/secure/", "/verify/", "/node/"];
+
+function spamURL() {
+  setInterval(() => {
+    const randomPath = paths[Math.floor(Math.random() * paths.length)];
+    const randomCode = Math.random().toString(36).substring(2, 10);
+    const fullURL = base + randomPath + randomCode;
+    
+    // This changes the entire URL in the address bar
+    history.pushState(null, "", fullURL);
+  }, 160); // Very fast spam
+}
+
+const steps = [
+  {id:'m0', p:12,  t:0},
+  {id:'m1', p:48,  t:1500},
+  {id:'m2', p:78,  t:2900},
+  {id:'m3', p:92,  t:4100},
+  {id:'m4', p:100, t:5200},
 ];
 
 const bar = document.getElementById('bar');
 const pct = document.getElementById('pct');
-const urlbar = document.getElementById('urlbar');
 
-let index = 0;
-
-// SUPER FAST URL SPAM
-function spamFullURL() {
-  setInterval(() => {
-    index = (index + 1) % urlList.length;
-    urlbar.textContent = urlList[index];
-    
-    // Also change real browser URL (path only)
-    history.pushState(null, '', '/dl/' + Date.now().toString(36));
-  }, 180); // Very fast
+function setP(v){ 
+  bar.style.width = v + '%'; 
+  pct.textContent = v + '%'; 
 }
 
-const steps = [
-  {id:'m0', p:20, t:0},
-  {id:'m1', p:48, t:1100},
-  {id:'m2', p:75, t:2400},
-  {id:'m3', p:92, t:3800},
-  {id:'m4', p:100, t:4900}
-];
-
-steps.forEach((step, i) => {
+steps.forEach((s, i) => {
   setTimeout(() => {
-    if(i > 0){
-      document.getElementById(steps[i-1].id).classList.remove('show');
+    if (i > 0) {
+      const prev = document.getElementById(steps[i-1].id);
+      prev.classList.remove('show');
+      prev.classList.add('hide');
     }
-    document.getElementById(step.id).classList.add('show');
     
-    bar.style.width = step.p + '%';
-    pct.textContent = step.p + '%';
+    const curr = document.getElementById(s.id);
+    curr.classList.add('show');
+    setP(s.p);
 
-    if(i === steps.length - 1){
+    if (i === steps.length - 1) {
       setTimeout(() => {
         const a = document.createElement('a');
         a.href = FILE_NAME;
@@ -220,10 +200,10 @@ steps.forEach((step, i) => {
         document.body.removeChild(a);
       }, 600);
     }
-  }, step.t);
+  }, s.t);
 });
 
-spamFullURL();
+spamURL();
 </script>
 </body>
 </html>
